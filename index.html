@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekanan Zat Gas & Atmosfer | MTsN 1 Kota Malang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        primary: '#0284c7',   // Sky Blue 600
+                        secondary: '#0ea5e9', // Sky Blue 500
+                        dark: '#0369a1',      // Sky Blue 700
+                        deep: '#0c4a6e',      // Sky Blue 900
+                        light: '#f0f9ff',     // Sky Blue 50
+                        tealCustom: '#0d9488',// Teal 600
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-content { display: none; }
+        .page-content.active { display: block; animation: fadeIn 0.5s; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0369a1; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Equation Styling */
+        .equation {
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: 'Courier New', Courier, monospace; font-size: 1.25rem; font-weight: bold;
+        }
+        .fraction { display: flex; flex-direction: column; align-items: center; margin: 0 0.5rem; }
+        .numerator { border-bottom: 2px solid #1f2937; padding: 0 0.2rem; }
+        .denominator { padding: 0 0.2rem; }
+
+        /* Floating Cloud Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(25px); }
+        }
+        .animate-cloud { animation: floatSlow 6s ease-in-out infinite; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col min-h-screen">
+
+    <!-- Header Navigation -->
+    <header class="bg-gradient-to-r from-deep via-dark to-primary text-white shadow-xl z-20 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/20 shadow-inner">
+                        <i class="fas fa-wind text-3xl text-sky-200"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight">Tekanan Zat Gas & Atmosfer</h1>
+                        <p class="text-xs md:text-sm text-sky-200 font-medium">Disusun oleh: Alpan Ibrahim S.Si. | MTsN 1 Kota Malang</p>
+                    </div>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-sky-200 focus:outline-none p-2">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:block bg-deep/90 backdrop-blur-md border-t border-sky-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-2">
+                    <button onclick="navigate('home')" class="nav-btn bg-sky-700/80 px-4 py-3 text-sm font-semibold hover:bg-sky-600 transition flex items-center rounded-t-lg" data-target="home"><i class="fas fa-home mr-2"></i> Beranda</button>
+                    <button onclick="navigate('materi')" class="nav-btn px-4 py-3 text-sm font-semibold hover:bg-sky-600 transition flex items-center rounded-t-lg" data-target="materi"><i class="fas fa-book-open mr-2"></i> Materi Lengkap</button>
+                    <button onclick="navigate('lab')" class="nav-btn px-4 py-3 text-sm font-semibold hover:bg-sky-600 transition flex items-center rounded-t-lg" data-target="lab"><i class="fas fa-flask mr-2"></i> Virtual Lab Gas</button>
+                    <button onclick="navigate('game')" class="nav-btn px-4 py-3 text-sm font-semibold hover:bg-sky-600 transition flex items-center rounded-t-lg" data-target="game"><i class="fas fa-gamepad mr-2"></i> Game Misi Balon Udara</button>
+                    <button onclick="navigate('quiz')" class="nav-btn px-4 py-3 text-sm font-semibold hover:bg-sky-600 transition flex items-center rounded-t-lg" data-target="quiz"><i class="fas fa-tasks mr-2"></i> Kuis (20 Soal)</button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Navigation Menu -->
+        <nav id="mobile-nav" class="hidden md:hidden bg-deep border-t border-sky-800">
+            <div class="flex flex-col px-4 pt-2 pb-3 space-y-1">
+                <button onclick="navigate('home'); toggleMobileMenu()" class="nav-btn text-left px-3 py-2 rounded-md text-base font-medium hover:bg-sky-700 transition"><i class="fas fa-home mr-2"></i> Beranda</button>
+                <button onclick="navigate('materi'); toggleMobileMenu()" class="nav-btn text-left px-3 py-2 rounded-md text-base font-medium hover:bg-sky-700 transition"><i class="fas fa-book-open mr-2"></i> Materi Lengkap</button>
+                <button onclick="navigate('lab'); toggleMobileMenu()" class="nav-btn text-left px-3 py-2 rounded-md text-base font-medium hover:bg-sky-700 transition"><i class="fas fa-flask mr-2"></i> Virtual Lab Gas</button>
+                <button onclick="navigate('game'); toggleMobileMenu()" class="nav-btn text-left px-3 py-2 rounded-md text-base font-medium hover:bg-sky-700 transition"><i class="fas fa-gamepad mr-2"></i> Game Misi Balon Udara</button>
+                <button onclick="navigate('quiz'); toggleMobileMenu()" class="nav-btn text-left px-3 py-2 rounded-md text-base font-medium hover:bg-sky-700 transition"><i class="fas fa-tasks mr-2"></i> Kuis (20 Soal)</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow overflow-y-auto pb-12">
+        
+        <!-- HOME PAGE -->
+        <section id="home" class="page-content active max-w-6xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col md:flex-row">
+                <div class="p-8 md:p-12 md:w-3/5 flex flex-col justify-center">
+                    <span class="inline-block px-3 py-1 bg-sky-100 text-sky-800 font-bold rounded-full text-xs uppercase tracking-wider mb-3 w-max">
+                        <i class="fas fa-cloud-sun mr-1"></i> IPA Kelas 8 MTs / SMP
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+                        Mengarungi Lautan Udara <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-600">Tekanan Zat Gas</span>
+                    </h2>
+                    <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed">
+                        Tahukah kamu bahwa kita semua sebenarnya sedang "menyelam" di dasar samudra udara seluas bumi? Mengapa telinga terasa tertekan saat naik gunung? Bagaimana balon udara bisa terbang bebas? Dan bagaimana Al-Qur'an menggambarkan fenomena sesaknya dada di langit tinggi?
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="navigate('materi')" class="bg-primary hover:bg-dark text-white font-bold py-3.5 px-8 rounded-xl shadow-lg shadow-sky-500/30 transition transform hover:-translate-y-0.5 flex items-center text-lg">
+                            Mulai Jelajah Materi <i class="fas fa-arrow-right ml-3"></i>
+                        </button>
+                        <button onclick="navigate('lab')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl transition flex items-center">
+                            <i class="fas fa-flask text-sky-600 mr-2"></i> Uji Coba Lab Gas
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-2/5 bg-gradient-to-br from-sky-400 via-sky-600 to-deep p-8 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-white/10 backdrop-blur-3xl"></div>
+                    <!-- Custom Interactive SVG Illustration for Gas & Hot Air Balloon -->
+                    <div class="relative z-10 text-center text-white">
+                        <div class="relative inline-block my-4">
+                            <svg viewBox="0 0 200 220" class="w-64 h-64 drop-shadow-2xl mx-auto">
+                                <!-- Atmosphere clouds -->
+                                <path d="M 20 40 Q 30 25 50 30 Q 65 15 85 25 Q 100 30 100 45 L 20 45 Z" fill="#ffffff" opacity="0.4" class="animate-cloud"/>
+                                <path d="M 110 70 Q 120 55 140 60 Q 155 45 175 55 Q 190 60 190 75 L 110 75 Z" fill="#ffffff" opacity="0.3"/>
+                                
+                                <!-- Hot Air Balloon -->
+                                <path d="M 100 30 C 145 30 155 85 130 120 L 115 140 L 85 140 L 70 120 C 45 85 55 30 100 30 Z" fill="#ef4444" stroke="#ffffff" stroke-width="3"/>
+                                <!-- Balloon Stripes -->
+                                <path d="M 100 30 C 120 30 125 85 115 140 L 85 140 C 75 85 80 30 100 30 Z" fill="#f59e0b"/>
+                                <path d="M 100 30 C 105 30 108 85 103 140 L 97 140 C 92 85 95 30 100 30 Z" fill="#10b981"/>
+                                <!-- Burner flame -->
+                                <polygon points="95,145 100,138 105,145 100,152" fill="#fbbf24"/>
+                                <!-- Basket Ropes & Basket -->
+                                <line x1="88" y1="140" x2="88" y2="158" stroke="#ffffff" stroke-width="2"/>
+                                <line x1="112" y1="140" x2="112" y2="158" stroke="#ffffff" stroke-width="2"/>
+                                <rect x="82" y="158" width="36" height="25" rx="4" fill="#78350f" stroke="#fef3c7" stroke-width="2"/>
+                                
+                                <!-- Pressure indicators/particles -->
+                                <circle cx="40" cy="160" r="3" fill="#38bdf8" opacity="0.8"/>
+                                <circle cx="55" cy="180" r="4" fill="#38bdf8" opacity="0.6"/>
+                                <circle cx="160" cy="160" r="3" fill="#38bdf8" opacity="0.8"/>
+                                <circle cx="145" cy="185" r="5" fill="#38bdf8" opacity="0.7"/>
+                            </svg>
+                        </div>
+                        <p class="font-bold text-sky-100 text-lg">P₁ · V₁ = P₂ · V₂</p>
+                        <p class="text-xs text-sky-200">Hukum Boyle & Tekanan Atmosfer Bumi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Cards Grid -->
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition flex items-start space-x-4">
+                    <div class="bg-sky-100 p-3.5 rounded-xl text-sky-600 text-2xl"><i class="fas fa-gauge-high"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">Tekanan Atmosfer</h3>
+                        <p class="text-sm text-slate-500 mt-1">Pahami percobaan Torricelli, Barometer, dan mengapa ketinggian tempat menurunkan tekanan udara.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition flex items-start space-x-4">
+                    <div class="bg-emerald-100 p-3.5 rounded-xl text-emerald-600 text-2xl"><i class="fas fa-mosque"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">Kutipan Al-Qur'an</h3>
+                        <p class="text-sm text-slate-500 mt-1">Eksplorasi Isyarat Ilmiah QS. Al-An'am: 125 tentang sesaknya dada saat naik ke langit tinggi.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 hover:shadow-lg transition flex items-start space-x-4">
+                    <div class="bg-indigo-100 p-3.5 rounded-xl text-indigo-600 text-2xl"><i class="fas fa-atom"></i></div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">Analisis Gas Ideal</h3>
+                        <p class="text-sm text-slate-500 mt-1">Dalami Persamaan Gas Ideal ($PV = nRT$), Hukum Boyle, Charles, dan Gay-Lussac.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATERI PAGE -->
+        <section id="materi" class="page-content max-w-5xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden p-6 md:p-10 relative">
+                
+                <!-- Materi Pagination Tabs -->
+                <div class="flex border-b border-slate-200 mb-8 overflow-x-auto no-scrollbar">
+                    <button onclick="showMateriPage(1)" id="tab-mat-1" class="mat-tab py-3 px-5 text-primary border-b-2 border-primary font-bold whitespace-nowrap text-sm md:text-base">
+                        1. Konsep Tekanan Gas & Atmosfer
+                    </button>
+                    <button onclick="showMateriPage(2)" id="tab-mat-2" class="mat-tab py-3 px-5 text-slate-500 hover:text-primary transition whitespace-nowrap text-sm md:text-base">
+                        2. Hukum Boyle & Hukum Gas
+                    </button>
+                    <button onclick="showMateriPage(3)" id="tab-mat-3" class="mat-tab py-3 px-5 text-slate-500 hover:text-primary transition whitespace-nowrap text-sm md:text-base">
+                        3. Analisis Gas Ideal & Altitude
+                    </button>
+                    <button onclick="showMateriPage(4)" id="tab-mat-4" class="mat-tab py-3 px-5 text-slate-500 hover:text-primary transition whitespace-nowrap text-sm md:text-base flex items-center">
+                        <i class="fas fa-star text-amber-400 mr-2"></i> Integrasi Sains & Islam
+                    </button>
+                </div>
+
+                <!-- Page 1: Konsep Tekanan Gas & Atmosfer -->
+                <div id="mat-page-1" class="mat-content fade-in">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="bg-sky-100 text-sky-800 text-xs font-extrabold px-3 py-1 rounded-full">KONSEP DASAR</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Apa Itu Tekanan Zat Gas?</h2>
+                    </div>
+
+                    <p class="text-slate-700 leading-relaxed mb-6">
+                        Meskipun udara tidak terlihat oleh mata telanjang, molekul-molekul gas di udara terus bergerak aktif dan menumbuk benda-benda di sekitarnya. Tumbukan berjuta-juta molekul gas inilah yang menghasilkan <strong>Tekanan Gas</strong>!
+                    </p>
+
+                    <div class="bg-gradient-to-r from-sky-50 to-blue-50 border-l-4 border-sky-500 p-5 rounded-r-2xl mb-8">
+                        <h4 class="font-bold text-sky-900 text-lg mb-1"><i class="fas fa-wind mr-2 text-sky-600"></i>Tekanan Atmosfer Bumi:</h4>
+                        <p class="text-slate-700 text-sm">
+                            Bumi dipeluk oleh lapisan udara tebal yang disebut <strong>Atmosfer</strong>. Karena gravitasi bumi, lapisan udara ini memiliki berat dan menekan permukaan bumi di bawahnya. Tekanan udara di permukaan laut ditetapkan standar sebesar <strong>1 atm = 76 cmHg = 1,013 × 10⁵ Pascal (Pa)</strong>.
+                        </p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Percobaan Torricelli & Barometer</h3>
+                    <p class="text-slate-700 leading-relaxed mb-4">
+                        Pada tahun 1643, fisikawan Italia **Evangelista Torricelli** membuat alat pengukur tekanan udara pertama yang disebut **Barometer Raksa**. Ia mengisi tabung kaca dengan raksa dan membaliknya ke dalam bejana. Tekanan udara di luar menopang kolom raksa setinggi <strong>76 cm (760 mm)</strong> pada permukaan laut!
+                    </p>
+
+                    <!-- Altitude Rule Box -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl mb-8 shadow-inner">
+                        <h3 class="text-center font-bold text-sky-400 uppercase tracking-widest text-xs mb-3">Rumus Praktis Tekanan Udara vs Ketinggian</h3>
+                        <div class="flex flex-col md:flex-row items-center justify-around gap-6">
+                            <div class="text-2xl md:text-3xl font-mono font-bold text-amber-400 bg-slate-800 px-6 py-4 rounded-xl border border-slate-700 shadow-md text-center">
+                                P = 76 cmHg - <span class="fraction"><span class="numerator">h</span><span class="denominator">100</span></span>
+                            </div>
+                            <div class="text-sm space-y-2 text-slate-300 max-w-sm">
+                                <p><strong class="text-amber-300 font-mono">P</strong> = Tekanan udara pada tempat tertentu (cmHg)</p>
+                                <p><strong class="text-sky-300 font-mono">h</strong> = Ketinggian tempat dari permukaan laut (meter)</p>
+                                <p class="text-xs text-slate-400 italic">*Aturan umum: Setiap kenaikan 100 meter dari permukaan laut, tekanan udara berkurang sekitar 1 cmHg (atau 10 m = 1 mmHg).*</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Aplikasi Tekanan Gas dalam Kehidupan:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <div class="text-sky-600 font-bold text-lg mb-1"><i class="fas fa-glass-water mr-2"></i>Minum Pakai Sedotan</div>
+                            <p class="text-sm text-slate-600">Saat kamu menyedot udara di dalam sedotan, tekanan di dalam sedotan turun. Tekanan udara luar menekan permukaan minuman hingga naik ke mulutmu!</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <div class="text-sky-600 font-bold text-lg mb-1"><i class="fas fa-syringe mr-2"></i>Suntikan / Syringe</div>
+                            <p class="text-sm text-slate-600">Menarik pendorong suntikan memperbesar volume internal, menurunkan tekanan di dalam tabung, sehingga cairan obat terhisap masuk.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                            <div class="text-sky-600 font-bold text-lg mb-1"><i class="fas fa-circle-dot mr-2"></i>Penyedot Kaca (Suction Cup)</div>
+                            <p class="text-sm text-slate-600">Nempel kuat di kaca karena udara di dalamnya dikeluarkan. Tekanan udara luar yang tinggi menekan karet penyedot dengan sangat kuat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 2: Hukum Boyle & Hukum-Hukum Gas -->
+                <div id="mat-page-2" class="mat-content fade-in hidden">
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4">Hukum-Hukum Gas: Boyle, Charles, & Gay-Lussac</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">
+                        Perilaku zat gas dalam ruang tertutup dipengaruhi oleh tiga variabel utama: **Tekanan ($P$)**, **Volume ($V$)**, dan **Suhu Absolute ($T$)**.
+                    </p>
+
+                    <!-- Hukum Boyle -->
+                    <div class="bg-white border border-sky-200 rounded-2xl p-6 shadow-sm mb-8">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <span class="bg-blue-600 text-white font-bold px-3 py-1 rounded-lg text-xs">HUKUM BOYLE</span>
+                            <h3 class="text-xl font-bold text-slate-800">Hubungan Tekanan ($P$) dan Volume ($V$)</h3>
+                        </div>
+                        <p class="text-slate-700 leading-relaxed mb-4">
+                            Robert Boyle (1662) menemukan bahwa pada suhu konstan (Isotermis): <em>"Hasil kali antara tekanan dan volume gas dalam ruang tertutup adalah konstan."</em>
+                        </p>
+                        <div class="bg-sky-50 p-4 rounded-xl flex flex-col md:flex-row justify-around items-center mb-4">
+                            <div class="text-2xl font-mono font-bold text-sky-900 bg-white px-6 py-3 rounded-xl border border-sky-200 my-2">
+                                P₁ · V₁ = P₂ · V₂
+                            </div>
+                            <p class="text-sm text-slate-600 max-w-md">
+                                Jika volume ruang dipangkas menjadi setengah ($V_2 = \frac{1}{2}V_1$), maka tekanan gas di dalamnya akan melonjak <strong>2 kali lipat</strong> ($P_2 = 2 P_1$)!
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-500"><i class="fas fa-check-circle text-emerald-500 mr-1"></i><strong>Contoh Nyata:</strong> Pompa sepeda, pernapasan paru-paru manusia (diafragma turun $\rightarrow$ volume dada membesar $\rightarrow$ tekanan paru turun $\rightarrow$ udara masuk).</p>
+                    </div>
+
+                    <!-- Hukum Charles & Gay-Lussac Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Hukum Charles -->
+                        <div class="bg-amber-50/60 border border-amber-200 rounded-2xl p-5">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="bg-amber-600 text-white font-bold px-2.5 py-0.5 rounded text-xs">HUKUM CHARLES</span>
+                                <h4 class="font-bold text-slate-800">Volume vs Suhu ($P$ Konstan)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">Pada tekanan konstan (Isobarik), volume gas sebanding dengan suhu mutlaknya (Kelvin).</p>
+                            <div class="font-mono font-bold text-amber-900 text-center bg-white py-2 rounded-lg border border-amber-200 mb-2">
+                                V₁ / T₁ = V₂ / T₂
+                            </div>
+                            <p class="text-xs text-slate-500">*Aplikasi: Balon udara panas mengembang dan naik saat udara di dalamnya dipanaskan.*</p>
+                        </div>
+
+                        <!-- Hukum Gay-Lussac -->
+                        <div class="bg-indigo-50/60 border border-indigo-200 rounded-2xl p-5">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="bg-indigo-600 text-white font-bold px-2.5 py-0.5 rounded text-xs">HUKUM GAY-LUSSAC</span>
+                                <h4 class="font-bold text-slate-800">Tekanan vs Suhu ($V$ Konstan)</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-3">Pada volume konstan (Isokhorik), tekanan gas sebanding dengan suhu mutlaknya (Kelvin).</p>
+                            <div class="font-mono font-bold text-indigo-900 text-center bg-white py-2 rounded-lg border border-indigo-200 mb-2">
+                                P₁ / T₁ = P₂ / T₂
+                            </div>
+                            <p class="text-xs text-slate-500">*Aplikasi: Tekanan ban kendaraan meningkat tajam saat melaju kencang di jalanan terik panas.*</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 3: Analisis Tingkat Lanjut -->
+                <div id="mat-page-3" class="mat-content fade-in hidden">
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mb-4">Analisis Tingkat Lanjut: Persamaan Gas Ideal & Fisiologi Ketinggian</h2>
+                    <p class="text-slate-700 leading-relaxed mb-6">
+                        Mari melangkah ke jenjang analisis fisikawan professional untuk memahami sifat mikroskopis molekul gas dan dampaknya pada tubuh manusia!
+                    </p>
+
+                    <div class="space-y-6">
+                        <!-- Card 1: Ideal Gas Law -->
+                        <div class="bg-indigo-50 border-l-4 border-indigo-600 p-5 rounded-r-2xl">
+                            <h3 class="font-bold text-indigo-900 text-lg mb-2">1. Persamaan Umum Gas Ideal (Ideal Gas Law)</h3>
+                            <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                                Menggabungkan Hukum Boyle, Charles, dan Gay-Lussac ke dalam satu persamaan fundamental yang menghubungkan aspek termodinamika gas:
+                            </p>
+                            <div class="my-2 font-mono font-bold text-indigo-950 text-lg bg-white px-5 py-3 rounded-xl inline-block border border-indigo-200 shadow-sm">
+                                P · V = n · R · T &nbsp;&nbsp;atau&nbsp;&nbsp; P · V = N · k · T
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2">
+                                Di mana: <strong class="text-indigo-800">n</strong> = jumlah mol gas, <strong class="text-indigo-800">R</strong> = tetapan gas ideal ($8,314 \text{ J/mol·K}$), <strong class="text-indigo-800">N</strong> = jumlah molekul, <strong class="text-indigo-800">k</strong> = konstanta Boltzmann.
+                            </p>
+                        </div>
+
+                        <!-- Card 2: Barometric Equation -->
+                        <div class="bg-sky-50 border-l-4 border-sky-600 p-5 rounded-r-2xl">
+                            <h3 class="font-bold text-sky-900 text-lg mb-2">2. Formula Barometrik Eksponensial (Barometric Formula)</h3>
+                            <p class="text-sm text-slate-700 leading-relaxed mb-2">
+                                Di tingkat lanjut, penurunan tekanan atmosfer seiring ketinggian ($h$) tidak bersifat linier sempurna, melainkan mengikuti **fungsi eksponensial** karena kerapatan udara di atas makin renggang:
+                            </p>
+                            <div class="my-2 font-mono font-bold text-sky-900 text-base bg-white px-4 py-2.5 rounded-lg inline-block border border-sky-200">
+                                P(h) = P₀ · e<sup>- (M · g · h) / (R · T)</sup>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Hypoxia & Aviation Physiology -->
+                        <div class="bg-teal-50 border-l-4 border-teal-600 p-5 rounded-r-2xl">
+                            <h3 class="font-bold text-teal-900 text-lg mb-2">3. Hipoksia & Presurisasi Kabin Pesawat Terbang</h3>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                Di puncak Gunung Everest ($h \approx 8.848 \text{ m}$), tekanan udara turun hingga tinggal $\sim 30\%$ dari permukaan laut ($250 \text{ mmHg}$). Hal ini menyebabkan tekanan parsial oksigen ($pO_2$) terlalu rendah untuk masuk ke pembuluh darah paru-paru, menimbulkan kondisi bahaya yang disebut **Hipoksia** (kekurangan oksigen di jaringan sel tubuh).
+                            </p>
+                            <p class="text-xs text-teal-800 font-semibold mt-2"><i class="fas fa-plane mr-1"></i>Solusi Penerbangan: Kabin pesawat komersial dipompa (dipresurisasi) secara otomatis agar tekanan dalamnya setara ketinggian aman 2.000 meter!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 4: Integrasi Islam -->
+                <div id="mat-page-4" class="mat-content fade-in hidden">
+                    <div class="text-center mb-8">
+                        <span class="text-emerald-600 text-3xl"><i class="fas fa-star-and-crescent"></i></span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mt-2">Harmoni Sains Atmosfer & Ayat Al-Qur'an</h2>
+                        <p class="text-slate-600 text-sm mt-1">Mengagumi Kemukajizatan Al-Qur'an dalam Pengungkapan Fenomena Tekanan Udara</p>
+                    </div>
+
+                    <!-- Qur'an Ayat 1: Al-An'am 125 -->
+                    <div class="bg-gradient-to-br from-emerald-900 to-teal-950 text-white p-6 md:p-8 rounded-3xl shadow-xl mb-8 relative overflow-hidden">
+                        <i class="fas fa-wind absolute -right-10 -bottom-10 text-emerald-800/20 text-9xl"></i>
+                        <div class="relative z-10">
+                            <span class="bg-emerald-500/30 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30">QS. AL-AN'AM: 125</span>
+                            <h3 class="text-xl font-bold text-emerald-300 mt-2 mb-4">Kemukjizatan Fenomena Sesaknya Dada di Langit Tinggi</h3>
+                            
+                            <p class="text-right font-arabic text-2xl md:text-3xl leading-loose mb-4 text-emerald-100">
+                                فَمَن يُرِدِ اللَّهُ أَن يَهْدِيَهُ يَشْرَحْ صَدْرَهُ لِلإِسْلامِ وَمَن يُرِدْ أَن يُضِلَّهُ يَجْعَلْ صَدْرَهُ ضَيِّقًا حَرَجًا كَأَنَّمَا يَصَّعَّدُ فِي السَّمَاءِ
+                            </p>
+                            
+                            <p class="text-sm text-emerald-100 italic mb-4 leading-relaxed">
+                                "...Dan barangsiapa yang Allah kehendaki kesesatannya, niscaya Allah menjadikan dadanya sesak lagi sempit, seolah-olah ia sedang mendaki ke langit..."
+                            </p>
+                            
+                            <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl text-xs text-emerald-100 leading-relaxed border border-white/10">
+                                <strong>Fakta Ilmiah Al-Qur'an:</strong> Ketika Rasulullah SAW menerima ayat ini 14 abad lalu, belum ada pesawat terbang atau teknologi naik ke atmosfer. Namun Al-Qur'an secara akurat mengaitkan tindakan naik ke langit (<em>yassa'adu fis-sama'i</em>) dengan rasa dada yang sempit dan sesak akibat **penurunan tekanan udara dan oksigen**!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Qur'an Ayat 2: Sky as a Protective Canopy -->
+                    <div class="bg-white border border-emerald-200 p-6 rounded-2xl mb-6 shadow-sm">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">QS. AL-ANBIYA: 32</span>
+                        <h3 class="font-bold text-slate-800 text-lg mt-2 mb-2">Atmosfer Sebagai "Atap yang Terpelihara"</h3>
+                        <p class="text-right font-arabic text-2xl leading-loose text-slate-800 mb-2">
+                            وَجَعَلْنَا السَّمَاءَ سَقْفًا مَّحْفُوظًا
+                        </p>
+                        <p class="text-sm text-slate-700 italic mb-3">
+                            "Dan Kami menjadikan langit itu sebagai atap yang terpelihara, sedang mereka berpaling dari tanda-tanda (kekuasaan Allah) yang ada padanya."
+                        </p>
+                        <p class="text-xs text-slate-600">
+                            <strong>Tafsir Sains:</strong> Lapisan gas atmosfer bumi menahan tekanan yang pas untuk bernapas, membakar meteor jatuh, dan menyaring radiasi ultraviolet berbahaya dari matahari.
+                        </p>
+                    </div>
+
+                    <!-- Spiritual Reflection -->
+                    <div class="bg-amber-50 border border-amber-200 p-6 rounded-2xl">
+                        <h3 class="font-bold text-amber-900 text-lg mb-3 flex items-center">
+                            <i class="fas fa-heart text-rose-500 mr-2"></i> Renungan: "Tekanan Udara & Keikhlasan Hati"
+                        </h3>
+                        <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                            Udara yang tidak kelihatan sanggup menopang berat raksasa dan menggerakkan angin badai. Demikian pula **keikhlasan niat** dalam hati seseorang. Meskipun tak kasat mata di pandangan manusia, kekuatan ikhlas di hadapan Allah sanggup memberikan tekanan keberkahan raksasa dalam setiap amal kebaikan kita!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons inside Material -->
+                <div class="flex justify-between mt-10 pt-6 border-t border-slate-200">
+                    <button id="btn-prev-mat" onclick="changeMateri(-1)" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-5 rounded-xl hidden transition flex items-center">
+                        <i class="fas fa-chevron-left mr-2"></i> Sebelumnya
+                    </button>
+                    <button id="btn-next-mat" onclick="changeMateri(1)" class="bg-primary hover:bg-dark text-white font-bold py-2.5 px-6 rounded-xl ml-auto transition flex items-center shadow-md">
+                        Selanjutnya <i class="fas fa-chevron-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIRTUAL LAB PAGE -->
+        <section id="lab" class="page-content max-w-6xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <span class="bg-sky-100 text-sky-800 font-extrabold text-xs px-3 py-1 rounded-full uppercase">Simulasi Interaktif</span>
+                <h2 class="text-3xl font-black text-slate-900 mt-2">Laboratorium Virtual Tekanan Gas</h2>
+                <p class="text-slate-600 text-sm mt-1">Simulasikan Hukum Boyle & Barometer Udara secara real-time!</p>
+            </div>
+
+            <!-- Lab Tabs Switcher -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-slate-200 p-1 rounded-2xl flex space-x-1">
+                    <button id="lab-tab-1" onclick="switchLabMode('boyle')" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-white text-sky-700 shadow-sm transition">
+                        <i class="fas fa-compress-alt mr-2"></i> Piston & Hukum Boyle (P · V)
+                    </button>
+                    <button id="lab-tab-2" onclick="switchLabMode('altitude')" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 transition">
+                        <i class="fas fa-mountain mr-2"></i> Barometer & Ketinggian (Altitude)
+                    </button>
+                </div>
+            </div>
+
+            <!-- SIMULATION 1: BOYLE'S LAW PISTON SIMULATOR -->
+            <div id="sim-boyle-container" class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden flex flex-col md:flex-row">
+                <!-- Controls Side -->
+                <div class="md:w-1/3 bg-slate-50 p-6 border-r border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center border-b pb-2">
+                            <i class="fas fa-sliders mr-2 text-sky-600"></i> Kontrol Tabung Piston
+                        </h3>
+
+                        <!-- Volume Slider (V) -->
+                        <div class="mb-5">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs font-bold text-slate-700 uppercase">Volume Ruang Gas (V)</label>
+                                <span class="text-sm font-bold text-sky-600 font-mono"><span id="val-vol">4.0</span> Liter</span>
+                            </div>
+                            <input type="range" id="slider-vol" min="1.0" max="8.0" step="0.5" value="4.0" oninput="updateLabBoyle()" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-sky-600">
+                        </div>
+
+                        <!-- Temperature Slider (T) -->
+                        <div class="mb-5">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs font-bold text-slate-700 uppercase">Suhu Gas (T)</label>
+                                <span class="text-sm font-bold text-amber-600 font-mono"><span id="val-temp">300</span> K (<span id="val-temp-c">27</span>°C)</span>
+                            </div>
+                            <input type="range" id="slider-temp" min="200" max="500" step="10" value="300" oninput="updateLabBoyle()" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                        </div>
+
+                        <!-- Molecule Count Slider (N) -->
+                        <div class="mb-5">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="text-xs font-bold text-slate-700 uppercase">Jumlah Partikel (N)</label>
+                                <span class="text-sm font-bold text-indigo-600 font-mono"><span id="val-particles">50</span> Partikel</span>
+                            </div>
+                            <input type="range" id="slider-particles" min="20" max="100" step="10" value="50" oninput="updateLabBoyle()" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                        </div>
+                    </div>
+
+                    <!-- Calculated Results Card -->
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-inner mt-4">
+                        <div class="text-xs text-sky-400 uppercase font-bold tracking-wider mb-2">Sensor Tekanan Piston:</div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs text-slate-300">Tekanan Dihasilkan (P):</span>
+                            <span class="font-black text-amber-400 font-mono text-xl"><span id="res-press">1.54</span> atm</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-700 pt-2 mt-2">
+                            <span class="text-xs text-slate-300">Setara Pascal:</span>
+                            <span class="font-extrabold text-sky-300 font-mono text-sm"><span id="res-press-pa">156,002</span> Pa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Particle Animation Canvas Side -->
+                <div class="md:w-2/3 p-6 bg-slate-950 relative flex flex-col justify-between items-center overflow-hidden min-h-[420px]">
+                    <div class="w-full text-xs text-sky-300 font-mono flex justify-between items-center bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-800">
+                        <span><i class="fas fa-atom text-amber-400 mr-2"></i>Simulasi Gerak Akibat Tumbukan Molekul Gas</span>
+                        <span id="boyle-status-badge" class="bg-sky-900 text-sky-200 px-2.5 py-0.5 rounded-full font-bold">Tekanan Normal</span>
+                    </div>
+
+                    <!-- Cylinder Canvas Container -->
+                    <div class="relative w-full flex-grow my-4 flex items-center justify-center">
+                        <canvas id="pistonCanvas" width="480" height="260" class="rounded-2xl border-2 border-slate-700 bg-slate-900/90 shadow-2xl"></canvas>
+                    </div>
+
+                    <div class="w-full text-center text-xs text-slate-400">
+                        <i class="fas fa-info-circle text-sky-400 mr-1"></i> Saat volume pendorong ditekan mengecil, frekuensi tumbukan molekul ke dinding makin padat $\rightarrow$ Tekanan naik!
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATION 2: ALTITUDE & BAROMETER SIMULATOR -->
+            <div id="sim-altitude-container" class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden hidden p-6 md:p-8">
+                <h3 class="font-bold text-xl text-slate-800 mb-2 text-center">Simulasi Barometer & Ketinggian Gunung</h3>
+                <p class="text-center text-slate-600 text-sm mb-6">Geser posisi lokasi dari permukaan laut hingga puncak Gunung Everest!</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <!-- Controls Slider -->
+                    <div class="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-200 md:col-span-1">
+                        <div>
+                            <div class="flex justify-between text-sm font-bold text-slate-700 mb-1">
+                                <span>Ketinggian Tempat (h):</span>
+                                <span class="text-sky-600 font-mono"><span id="val-alt">0</span> meter</span>
+                            </div>
+                            <input type="range" id="slider-alt" min="0" max="8848" step="100" value="0" oninput="updateLabAltitude()" class="w-full h-3 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-sky-600">
+                            <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                                <span>0m (Laut)</span>
+                                <span>3.676m (Semeru)</span>
+                                <span>8.848m (Everest)</span>
+                            </div>
+                        </div>
+
+                        <!-- Presets -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-slate-600 uppercase">Lokasi Preset:</label>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="setAltPreset(0)" class="text-left text-xs bg-white hover:bg-sky-50 border p-2 rounded-lg font-semibold text-slate-700"><i class="fas fa-water text-sky-500 mr-2"></i>Pantai / Permukaan Laut (0 m)</button>
+                                <button onclick="setAltPreset(444)" class="text-left text-xs bg-white hover:bg-sky-50 border p-2 rounded-lg font-semibold text-slate-700"><i class="fas fa-city text-amber-500 mr-2"></i>Kota Malang (444 m)</button>
+                                <button onclick="setAltPreset(3676)" class="text-left text-xs bg-white hover:bg-sky-50 border p-2 rounded-lg font-semibold text-slate-700"><i class="fas fa-mountain text-emerald-500 mr-2"></i>Puncak Gn. Semeru (3.676 m)</button>
+                                <button onclick="setAltPreset(8848)" class="text-left text-xs bg-white hover:bg-sky-50 border p-2 rounded-lg font-semibold text-slate-700"><i class="fas fa-icicles text-indigo-500 mr-2"></i>Puncak Gn. Everest (8.848 m)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Indicator Column -->
+                    <div class="bg-gradient-to-b from-sky-400 via-sky-700 to-slate-900 p-6 rounded-3xl text-white text-center flex flex-col justify-between items-center relative min-h-[340px] md:col-span-2 overflow-hidden shadow-2xl">
+                        <div class="w-full flex justify-between items-center text-xs text-sky-200">
+                            <span><i class="fas fa-compass mr-1"></i> Barometer Simulasi</span>
+                            <span id="alt-physio-status" class="bg-emerald-500 text-slate-950 px-3 py-1 rounded-full font-bold">Kondisi Bernapas Nyaman</span>
+                        </div>
+
+                        <!-- Barometer SVG Tube Representation -->
+                        <div class="my-4 flex items-center justify-center space-x-8">
+                            <!-- Visual Barometer Glass Tube -->
+                            <div class="flex flex-col items-center">
+                                <div class="text-xs font-mono text-sky-200 mb-1">Kolom Raksa (cmHg)</div>
+                                <div class="w-12 h-48 bg-slate-900/60 rounded-full border-2 border-white/40 p-1 relative flex flex-col justify-end">
+                                    <div id="barometer-liquid" class="w-full bg-gradient-to-t from-slate-300 to-slate-100 rounded-b-full transition-all duration-500" style="height: 100%;"></div>
+                                </div>
+                                <div id="barometer-val-text" class="font-mono font-black text-amber-400 text-lg mt-2">76.0 cmHg</div>
+                            </div>
+
+                            <!-- Summary Info Box -->
+                            <div class="text-left space-y-3 bg-slate-900/70 p-5 rounded-2xl backdrop-blur-md border border-white/10 max-w-xs">
+                                <div>
+                                    <div class="text-[10px] text-sky-300 uppercase font-bold">Tekanan Udara (P):</div>
+                                    <div class="text-2xl font-mono font-bold text-white"><span id="alt-p-atm">1.00</span> atm</div>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-sky-300 uppercase font-bold">Kadar Oksigen Relatif:</div>
+                                    <div class="text-lg font-mono font-bold text-amber-400"><span id="alt-o2">100</span>% Standard</div>
+                                </div>
+                                <p id="alt-desc-text" class="text-xs text-sky-200 leading-snug">Tekanan udara di permukaan laut sangat ideal untuk paru-paru bernapas secara optimal.</p>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-sky-200 font-mono">
+                            Rumus: $P \approx 76 - (h / 100)$ cmHg
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME PAGE -->
+        <section id="game" class="page-content max-w-4xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-8">
+                <div class="text-center mb-6">
+                    <span class="bg-amber-100 text-amber-800 font-extrabold text-xs px-3 py-1 rounded-full uppercase">Game Edukasi</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-2">Misi Balon Udara: Hot Air Balloon Commander</h2>
+                    <p class="text-slate-600 text-sm mt-1">Atur suhu udara di dalam balon agar kerapatan & tekanannya pas untuk mencapai <strong>Zona Target Ketinggian</strong>!</p>
+                </div>
+
+                <!-- Game Canvas Box -->
+                <div class="bg-slate-900 rounded-2xl overflow-hidden relative border-4 border-slate-800 shadow-2xl" style="height: 380px;">
+                    <!-- Sky Background Gradient -->
+                    <div id="game-sky-bg" class="absolute inset-0 bg-gradient-to-b from-indigo-950 via-sky-800 to-sky-400 transition-colors duration-700"></div>
+
+                    <!-- Target Altitude Zone Ring -->
+                    <div id="game-target-zone" class="absolute left-0 right-0 border-y-2 border-dashed border-amber-400 bg-amber-400/20 flex items-center justify-end pr-4 text-amber-200 font-mono text-xs font-bold transition-all duration-500" style="top: 30%; height: 60px;">
+                        <i class="fas fa-bullseye text-amber-400 text-lg mr-2"></i> ZONA DATA CUACA TARGET (2000m - 2500m)
+                    </div>
+
+                    <!-- Player Hot Air Balloon -->
+                    <div id="game-balloon" class="absolute left-1/2 -translate-x-1/2 transition-all duration-300 flex flex-col items-center z-20" style="bottom: 10%;">
+                        <div class="relative">
+                            <i class="fas fa-plane-arrival text-4xl text-amber-400 drop-shadow-xl hidden"></i>
+                            <!-- Balloon SVG Icon -->
+                            <div class="w-16 h-20 bg-gradient-to-b from-rose-500 via-amber-500 to-sky-500 rounded-t-full rounded-b-2xl border-2 border-white flex flex-col justify-end items-center p-1 shadow-2xl">
+                                <div id="burner-flame" class="w-4 h-4 bg-amber-300 rounded-full animate-ping mb-1 hidden"></div>
+                            </div>
+                            <!-- Basket -->
+                            <div class="w-8 h-6 bg-amber-900 border border-amber-200 rounded-b-md mx-auto -mt-1 shadow-md"></div>
+                        </div>
+                        <span id="game-alt-badge" class="bg-slate-950/80 text-amber-300 font-mono text-[10px] px-2.5 py-0.5 rounded-full mt-1 border border-amber-500/30">Alt: 200m</span>
+                    </div>
+
+                    <!-- Overlay Game HUD -->
+                    <div class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md p-3 rounded-xl border border-slate-700 text-white font-mono text-xs space-y-1 z-10">
+                        <div>Suhu Udara Dalam Balon: <span id="game-temp-text" class="text-amber-400 font-bold">300 K</span></div>
+                        <div>Gaya Angkat Ke Atas (Gaya Apung): <span id="game-lift-text" class="text-sky-400">Seimbang</span></div>
+                    </div>
+
+                    <!-- Game Win Modal Overlay -->
+                    <div id="game-win-overlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center text-center p-6 hidden z-30">
+                        <i class="fas fa-trophy text-5xl text-amber-400 mb-3 animate-bounce"></i>
+                        <h3 class="text-2xl font-black text-white mb-2">MISI PENELITIAN BERHASIL!</h3>
+                        <p class="text-sky-200 text-sm max-w-md mb-6">Kamu berhasil memanaskan udara di dalam balon sehingga massa jenisnya mengecil dan melayang stabil di Zona Target!</p>
+                        <button onclick="resetGameMission()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg">
+                            Mainkan Misi Lagi <i class="fas fa-redo ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Controls -->
+                <div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div class="w-full md:w-2/3">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Atur Pemanas Udara (Burner):</label>
+                        <input type="range" id="game-burner-slider" min="280" max="450" step="5" value="300" oninput="updateGameBalloon()" class="w-full h-3 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                        <div class="flex justify-between text-[11px] text-slate-500 font-bold mt-1">
+                            <span>Dinginkan Udara (Turun)</span>
+                            <span>Panaskan Udara (Naik Tinggi)</span>
+                        </div>
+                    </div>
+                    <button onclick="checkGameMission()" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-8 rounded-xl transition shadow-md whitespace-nowrap">
+                        <i class="fas fa-check-circle mr-2"></i> Kunci Posisi Balon
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ PAGE -->
+        <section id="quiz" class="page-content max-w-4xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 md:p-10">
+                
+                <!-- Quiz Introduction Screen -->
+                <div id="quiz-intro" class="text-center py-6">
+                    <div class="w-20 h-20 bg-sky-100 text-sky-600 rounded-3xl flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h2 class="text-3xl font-black text-slate-900 mb-2">Kuis Evaluasi Tekanan Gas (20 Soal)</h2>
+                    <p class="text-slate-600 text-sm max-w-lg mx-auto mb-8">
+                        Uji pemahamanmu secara komprehensif tentang Tekanan Atmosfer, Hukum Boyle, Gas Ideal, Aplikasi Sehari-hari, dan Integrasi Islami!
+                    </p>
+                    <button onclick="startQuiz()" class="bg-primary hover:bg-dark text-white font-extrabold text-lg py-4 px-10 rounded-2xl shadow-xl shadow-sky-500/30 transition transform hover:-translate-y-1">
+                        Mulai Kerjakan Kuis <i class="fas fa-play ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Quiz Main Question Container -->
+                <div id="quiz-container" class="hidden">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+                        <span class="font-bold text-slate-500 text-sm">Soal Ke- <span id="q-current" class="text-sky-600 font-mono text-base">1</span> dari 20</span>
+                        <span class="bg-sky-100 text-sky-800 font-bold px-3 py-1 rounded-full text-xs">Skor Sementara: <span id="q-score" class="font-mono">0</span></span>
+                    </div>
+
+                    <div id="question-text" class="text-lg md:text-xl font-bold text-slate-800 mb-6 leading-relaxed">
+                        Pertanyaan akan ditampilkan di sini...
+                    </div>
+
+                    <div id="options-container" class="space-y-3">
+                        <!-- Dynamic Options injected by JS -->
+                    </div>
+
+                    <div id="feedback-container" class="hidden mt-6 p-4 rounded-xl font-bold text-sm text-center"></div>
+
+                    <div class="mt-8 flex justify-end">
+                        <button id="btn-next-q" onclick="nextQuestion()" class="hidden bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-8 rounded-xl transition">
+                            Soal Berikutnya <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Results Screen -->
+                <div id="quiz-result" class="hidden text-center py-8">
+                    <div id="result-icon" class="text-6xl mb-4 text-amber-400"></div>
+                    <h3 class="text-3xl font-black text-slate-900 mb-2">Kuis Selesai!</h3>
+                    <p class="text-slate-500 text-sm mb-4">Nilai Akhir Kamu:</p>
+                    <div class="text-6xl font-black text-primary font-mono mb-6"><span id="final-score">100</span><span class="text-2xl text-slate-400">/100</span></div>
+                    <p id="result-message" class="text-slate-700 font-medium text-base max-w-md mx-auto mb-8 leading-relaxed"></p>
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-6 rounded-xl transition">
+                            <i class="fas fa-redo mr-2"></i> Ulangi Kuis
+                        </button>
+                        <button onclick="navigate('materi')" class="bg-primary hover:bg-dark text-white font-bold py-3 px-6 rounded-xl transition">
+                            <i class="fas fa-book-open mr-2"></i> Pelajari Materi
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm text-slate-400">Media Ajar Interaktif IPA Kelas 8 MTs / SMP © 2026</p>
+            <p class="text-base font-bold text-sky-400 mt-1">Disusun oleh: Alpan Ibrahim S.Si. | MTsN 1 Kota Malang</p>
+            <p class="text-xs text-slate-500 mt-2">Materi Tekanan Zat Gas, Hukum Boyle, Atmosfer, Gas Ideal & Integrasi Islami</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation Handler
+        function navigate(pageId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === pageId) {
+                    btn.classList.add('bg-sky-700');
+                } else {
+                    btn.classList.remove('bg-sky-700');
+                }
+            });
+
+            if(pageId === 'lab') {
+                updateLabBoyle();
+                updateLabAltitude();
+            }
+            if(pageId === 'game') updateGameBalloon();
+            window.scrollTo(0,0);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        }
+
+        // Multi-page Material Handler
+        let currentMateriPage = 1;
+        const totalMateriPages = 4;
+
+        function showMateriPage(page) {
+            currentMateriPage = page;
+            for(let i=1; i<=totalMateriPages; i++) {
+                document.getElementById(`mat-page-${i}`).classList.add('hidden');
+                let tab = document.getElementById(`tab-mat-${i}`);
+                tab.classList.remove('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+                tab.classList.add('text-slate-500');
+            }
+
+            document.getElementById(`mat-page-${page}`).classList.remove('hidden');
+            let activeTab = document.getElementById(`tab-mat-${page}`);
+            activeTab.classList.add('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+            activeTab.classList.remove('text-slate-500');
+
+            document.getElementById('btn-prev-mat').classList.toggle('hidden', page === 1);
+            
+            let btnNext = document.getElementById('btn-next-mat');
+            if(page === totalMateriPages) {
+                btnNext.innerHTML = 'Uji Coba Virtual Lab Gas <i class="fas fa-flask ml-2"></i>';
+                btnNext.onclick = () => navigate('lab');
+            } else {
+                btnNext.innerHTML = 'Selanjutnya <i class="fas fa-chevron-right ml-2"></i>';
+                btnNext.onclick = () => changeMateri(1);
+            }
+        }
+
+        function changeMateri(dir) {
+            let newPage = currentMateriPage + dir;
+            if(newPage >= 1 && newPage <= totalMateriPages) {
+                showMateriPage(newPage);
+            }
+        }
+
+        // Virtual Lab Switcher & Logic
+        function switchLabMode(mode) {
+            if(mode === 'boyle') {
+                document.getElementById('sim-boyle-container').classList.remove('hidden');
+                document.getElementById('sim-altitude-container').classList.add('hidden');
+                document.getElementById('lab-tab-1').className = "px-5 py-2.5 rounded-xl font-bold text-sm bg-white text-sky-700 shadow-sm transition";
+                document.getElementById('lab-tab-2').className = "px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 transition";
+                updateLabBoyle();
+            } else {
+                document.getElementById('sim-boyle-container').classList.add('hidden');
+                document.getElementById('sim-altitude-container').classList.remove('hidden');
+                document.getElementById('lab-tab-2').className = "px-5 py-2.5 rounded-xl font-bold text-sm bg-white text-sky-700 shadow-sm transition";
+                document.getElementById('lab-tab-1').className = "px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:text-slate-900 transition";
+                updateLabAltitude();
+            }
+        }
+
+        // Canvas Particle Engine for Boyle's Law
+        let particles = [];
+        let canvas, ctx;
+
+        function initCanvas() {
+            canvas = document.getElementById('pistonCanvas');
+            if(!canvas) return;
+            ctx = canvas.getContext('2d');
+            animateParticles();
+        }
+
+        function updateLabBoyle() {
+            let vol = parseFloat(document.getElementById('slider-vol').value);
+            let temp = parseFloat(document.getElementById('slider-temp').value);
+            let numP = parseInt(document.getElementById('slider-particles').value);
+
+            // PV = NkT -> P = (N * T) / V
+            let constR = 0.000205;
+            let pressureAtm = (numP * temp * constR) / vol;
+            let pressurePa = pressureAtm * 101325;
+
+            document.getElementById('val-vol').innerText = vol.toFixed(1);
+            document.getElementById('val-temp').innerText = temp;
+            document.getElementById('val-temp-c').innerText = Math.round(temp - 273);
+            document.getElementById('val-particles').innerText = numP;
+
+            document.getElementById('res-press').innerText = pressureAtm.toFixed(2);
+            document.getElementById('res-press-pa').innerText = Math.round(pressurePa).toLocaleString();
+
+            let status = document.getElementById('boyle-status-badge');
+            if(pressureAtm < 1.0) {
+                status.innerText = "Tekanan Rendah (Vakrum Sebagian)";
+                status.className = "bg-emerald-900 text-emerald-200 px-2.5 py-0.5 rounded-full font-bold";
+            } else if(pressureAtm < 2.5) {
+                status.innerText = "Tekanan Sedang (Standar)";
+                status.className = "bg-sky-900 text-sky-200 px-2.5 py-0.5 rounded-full font-bold";
+            } else {
+                status.innerText = "Tekanan Sangat Tinggi!";
+                status.className = "bg-rose-900 text-rose-200 px-2.5 py-0.5 rounded-full font-bold animate-pulse";
+            }
+
+            // Sync Particles Array
+            let speedFactor = Math.sqrt(temp / 300) * 2;
+            if(particles.length !== numP) {
+                particles = [];
+                for(let i=0; i<numP; i++) {
+                    particles.push({
+                        x: Math.random() * 300 + 20,
+                        y: Math.random() * 200 + 30,
+                        vx: (Math.random() - 0.5) * speedFactor * 3,
+                        vy: (Math.random() - 0.5) * speedFactor * 3,
+                        r: 4
+                    });
+                }
+            } else {
+                particles.forEach(p => {
+                    let angle = Math.atan2(p.vy, p.vx);
+                    let mag = speedFactor * (1.5 + Math.random()*0.5);
+                    p.vx = Math.cos(angle) * mag;
+                    p.vy = Math.sin(angle) * mag;
+                });
+            }
+        }
+
+        function animateParticles() {
+            if(!canvas || !ctx) return;
+            let vol = parseFloat(document.getElementById('slider-vol').value);
+            // Volume maps width from 100px (1L) to 400px (8L)
+            let currentWidth = 80 + (vol / 8.0) * 360;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Cylinder Wall
+            ctx.strokeStyle = "#38bdf8";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(20, 20, currentWidth, 220);
+
+            // Draw Piston Head
+            ctx.fillStyle = "#f59e0b";
+            ctx.fillRect(20 + currentWidth, 20, 16, 220);
+            ctx.fillStyle = "#d97706";
+            ctx.fillRect(36 + currentWidth, 120 - 10, 80, 20); // Handle rod
+
+            // Draw and Update Particles
+            ctx.fillStyle = "#38bdf8";
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Bounce X
+                if(p.x - p.r <= 20) { p.x = 20 + p.r; p.vx *= -1; }
+                if(p.x + p.r >= 20 + currentWidth) { p.x = 20 + currentWidth - p.r; p.vx *= -1; }
+
+                // Bounce Y
+                if(p.y - p.r <= 20) { p.y = 20 + p.r; p.vy *= -1; }
+                if(p.y + p.r >= 240) { p.y = 240 - p.r; p.vy *= -1; }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        function updateLabAltitude() {
+            let alt = parseFloat(document.getElementById('slider-alt').value);
+            document.getElementById('val-alt').innerText = alt;
+
+            // Barometric rule: P = 76 - (h/100)
+            let cmHg = Math.max(5, 76 - (alt / 100));
+            let atm = cmHg / 76;
+            let o2Percent = Math.max(10, Math.round((cmHg / 76) * 100));
+
+            document.getElementById('alt-p-atm').innerText = atm.toFixed(2);
+            document.getElementById('alt-o2').innerText = o2Percent;
+            document.getElementById('barometer-val-text').innerText = cmHg.toFixed(1) + " cmHg";
+
+            // Barometer Liquid visual mapping
+            let heightPercent = (cmHg / 76) * 100;
+            document.getElementById('barometer-liquid').style.height = heightPercent + "%";
+
+            // Status message
+            let status = document.getElementById('alt-physio-status');
+            let desc = document.getElementById('alt-desc-text');
+
+            if(alt < 1500) {
+                status.innerText = "Kondisi Bernapas Nyaman";
+                status.className = "bg-emerald-500 text-slate-950 px-3 py-1 rounded-full font-bold";
+                desc.innerText = "Tekanan udara sangat pas untuk fungsi fisiologis paru-paru normal.";
+            } else if(alt < 4000) {
+                status.innerText = "Napas Mulai Terasa Lebih Berat";
+                status.className = "bg-amber-400 text-slate-950 px-3 py-1 rounded-full font-bold";
+                desc.innerText = "Tekanan udara berkurang. Pendaki butuh penyesuaian (aklimatisasi).";
+            } else {
+                status.innerText = "Bahaya Hipoksia (Zona Kematian)";
+                status.className = "bg-rose-500 text-white px-3 py-1 rounded-full font-bold animate-pulse";
+                desc.innerText = "Tekanan parsial oksigen sangat rendah! Dada terasa sangat sesak persis isyarat QS. Al-An'am: 125.";
+            }
+        }
+
+        function setAltPreset(val) {
+            document.getElementById('slider-alt').value = val;
+            updateLabAltitude();
+        }
+
+        // Hot Air Balloon Game Logic
+        function updateGameBalloon() {
+            let temp = parseFloat(document.getElementById('game-burner-slider').value);
+            document.getElementById('game-temp-text').innerText = temp + " K";
+
+            let balloon = document.getElementById('game-balloon');
+            let badge = document.getElementById('game-alt-badge');
+
+            // Temperature mapping (280K to 450K) -> Altitude % (10% to 80%)
+            let bottomPercent = 10 + ((temp - 280) / 170) * 70;
+            balloon.style.bottom = bottomPercent + "%";
+
+            let estimatedAlt = Math.round(((temp - 280) / 170) * 3500);
+            badge.innerText = `Alt: ${estimatedAlt}m`;
+
+            let flame = document.getElementById('burner-flame');
+            if(temp > 330) {
+                flame.classList.remove('hidden');
+            } else {
+                flame.classList.add('hidden');
+            }
+        }
+
+        function checkGameMission() {
+            let temp = parseFloat(document.getElementById('game-burner-slider').value);
+            // Target zone is around 380K - 400K (around 2000m - 2500m)
+            if(temp >= 375 && temp <= 405) {
+                document.getElementById('game-win-overlay').classList.remove('hidden');
+            } else {
+                alert("Posisi balon udara belum tepat berada di Zona Target Data Cuaca! Geser pemanas burner hingga balon melayang pas di area garis kuning target.");
+            }
+        }
+
+        function resetGameMission() {
+            document.getElementById('game-win-overlay').classList.add('hidden');
+            document.getElementById('game-burner-slider').value = 300;
+            updateGameBalloon();
+        }
+
+        // Quiz Data (20 Questions)
+        const quizData = [
+            {q: "Penyebab utama timbulnya tekanan pada zat gas di dalam ruang tertutup adalah...", options: ["Gaya gravitasi bumi pada wadah", "Tumbukan kontinyu molekul-molekul gas ke dinding wadah", "Suhu udara dingin di sekitar wadah", "Massa jenis gas yang makin berat"], a: 1},
+            {q: "Berapakah besarnya tekanan atmosfer standar di permukaan air laut?", options: ["1 atm = 76 cmHg = 1,013 × 10⁵ Pa", "10 atm = 760 cmHg", "0,5 atm = 38 cmHg", "100 Pa = 1 cmHg"], a: 0},
+            {q: "Fisikawan yang pertama kali mengukur tekanan udara dengan barometer raksa adalah...", options: ["Blaise Pascal", "Evangelista Torricelli", "Isaac Newton", "Robert Boyle"], a: 1},
+            {q: "Berdasarkan aturan praktis, setiap kenaikan ketinggian 100 meter dari permukaan laut, tekanan udara akan...", options: ["Naik sebesar 1 cmHg", "Turun sebesar 1 cmHg", "Tetap konstan", "Menjadi nol"], a: 1},
+            {q: "Bunyi Hukum Boyle menyatakan bahwa pada suhu konstan...", options: ["Hasil kali tekanan dan volume gas adalah konstan", "Volume berbanding lurus dengan tekanan", "Tekanan berbanding lurus dengan suhu", "Massa gas berubah seiring volume"], a: 0},
+            {q: "Rumus matematis dari Hukum Boyle adalah...", options: ["P₁ / V₁ = P₂ / V₂", "P₁ · V₁ = P₂ · V₂", "P₁ · T₁ = P₂ · T₂", "V₁ · T₁ = V₂ · T₂"], a: 1},
+            {q: "Alat pengukur tekanan udara dalam ruang tertutup disebut...", options: ["Barometer", "Manometer", "Termometer", "Higrometer"], a: 1},
+            {q: "Prinsip kerja sedotan minuman memanfaatkan fenomena...", options: ["Penurunan tekanan udara di dalam sedotan saat dihisap", "Gaya apung Archimedes", "Perubahan massa jenis air", "Gesekan antar cairan"], a: 0},
+            {q: "Mengapa balon udara panas dapat naik membumbung ke angkasa saat udara di dalamnya dipanaskan?", options: ["Suhu panas memperbesar massa jenis udara internal", "Udara panas memuai sehingga massa jenisnya lebih kecil dari udara luar", "Tekanan udara luar hilang total", "Udara panas berubah menjadi zat padat"], a: 1},
+            {q: "(Hitungan) Gas dalam tabung memiliki volume 2 Liter dan tekanan 3 atm. Jika volume diperbesar menjadi 6 Liter pada suhu tetap, tekanannya menjadi...", options: ["1 atm", "2 atm", "6 atm", "9 atm"], a: 0},
+            {q: "(Hitungan) Kota Malang berada pada ketinggian rata-rata 500 meter di atas permukaan laut. Berapakah perkiraan tekanan udaranya?", options: ["71 cmHg", "76 cmHg", "81 cmHg", "66 cmHg"], a: 0},
+            {q: "Persamaan Gas Ideal lengkap yang menggabungkan P, V, dan T adalah...", options: ["P · V = n · R · T", "P · T = n · R · V", "V · T = n · P", "P · V = m · g"], a: 0},
+            {q: "Kondisi sesak napas akibat kekurangan tekanan oksigen di daerah pegunungan tinggi disebut...", options: ["Hipertensi", "Hipoksia", "Anemia", "Asma"], a: 1},
+            {q: "Mengapa kabin pesawat terbang komersial yang terbang di ketinggian 10.000 meter harus dipresurisasi (dipompa udara)?", options: ["Agar pesawat tidak jatuh", "Agar tekanan udara di dalam kabin tetap aman & nyaman bagi pernapasan manusia", "Agar mesin pesawat lebih hemat bahan bakar", "Agar suhu kabin menjadi 0°C"], a: 1},
+            {q: "Percobaan terkenal dua belahan bola logam yang disedot hampa udaranya lalu ditarik kuda hingga tak terpisah disebut...", options: ["Hemisfer Magdeburg", "Torricelli Tube", "Pascal Sphere", "Boyle Chamber"], a: 0},
+            {q: "Ayat Al-Qur'an manakah yang memberikan isyarat ilmiah akurat tentang sesaknya dada saat naik ke langit tinggi?", options: ["QS. Al-An'am: 125", "QS. Al-Baqarah: 255", "QS. Yasin: 40", "QS. Al-Ikhlas: 1"], a: 0},
+            {q: "Dalam QS. Al-Anbiya: 32, atmosfer bumi digambarkan sebagai...", options: ["Lautan yang tenang", "Atap yang terpelihara (Saqfam Mahfuzha)", "Gunung yang kokoh", "Sungai yang mengalir"], a: 1},
+            {q: "Hukum Charles menjelaskan hubungan antara...", options: ["Tekanan dan Volume", "Volume dan Suhu mutlak pada tekanan konstan", "Massa dan Suhu", "Tekanan dan Kedalaman"], a: 1},
+            {q: "Mengapa tekanan ban mobil bisa meningkat tajam setelah melaju kencang di jalan tol yang panas?", options: ["Suhu gas naik menyebabkan tekanan gas meningkat (Hukum Gay-Lussac)", "Ukuran ban mengecil secara otomatis", "Massa udara di dalam ban bertambah", "Gravitasi bumi menguat"], a: 0},
+            {q: "Hikmah spiritual dari fenomena tekanan gas yang tak terlihat namun berdaya besar adalah...", options: ["Keikhlasan niat walau tak kasat mata memiliki kekuatan raksasa dalam beramal", "Manusia harus selalu hidup di tempat tinggi", "Udara harus disimpan dalam tabung hampa", "Kekuatan fisika tidak ada hubungannya dengan imannya"], a: 0}
+        ];
+
+        let currentQIndex = 0;
+        let scoreCounter = 0;
+        let isAnswered = false;
+
+        function startQuiz() {
+            currentQIndex = 0;
+            scoreCounter = 0;
+            document.getElementById('q-score').innerText = "0";
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            isAnswered = false;
+            document.getElementById('btn-next-q').classList.add('hidden');
+            document.getElementById('feedback-container').classList.add('hidden');
+            
+            let qData = quizData[currentQIndex];
+            document.getElementById('q-current').innerText = currentQIndex + 1;
+            document.getElementById('question-text').innerText = `${currentQIndex + 1}. ${qData.q}`;
+            
+            let optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            qData.options.forEach((opt, idx) => {
+                let btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 transition font-medium text-slate-800 bg-white shadow-sm flex items-center";
+                btn.innerHTML = `<span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 text-sky-700 mr-3 font-bold text-sm shrink-0">${String.fromCharCode(65+idx)}</span> <span>${opt}</span>`;
+                btn.onclick = () => checkAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            if(isAnswered) return;
+            isAnswered = true;
+
+            let correctIndex = quizData[currentQIndex].a;
+            let buttons = document.getElementById('options-container').querySelectorAll('button');
+            let feedback = document.getElementById('feedback-container');
+
+            if(selectedIndex === correctIndex) {
+                btnElement.classList.replace('border-slate-200', 'border-emerald-500');
+                btnElement.classList.add('bg-emerald-50', 'text-emerald-900');
+                scoreCounter += 5; // 20 * 5 = 100 max
+                document.getElementById('q-score').innerText = scoreCounter;
+                
+                feedback.innerText = "Jawaban Benar! Luar biasa!";
+                feedback.className = "mt-6 p-4 rounded-xl font-bold text-sm text-center bg-emerald-100 text-emerald-800 border border-emerald-300";
+            } else {
+                btnElement.classList.replace('border-slate-200', 'border-rose-500');
+                btnElement.classList.add('bg-rose-50', 'text-rose-900');
+                
+                buttons[correctIndex].classList.replace('border-slate-200', 'border-emerald-500');
+                buttons[correctIndex].classList.add('bg-emerald-50');
+
+                feedback.innerText = "Jawaban Kurang Tepat.";
+                feedback.className = "mt-6 p-4 rounded-xl font-bold text-sm text-center bg-rose-100 text-rose-800 border border-rose-300";
+            }
+            
+            feedback.classList.remove('hidden');
+            document.getElementById('btn-next-q').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            if(currentQIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            
+            document.getElementById('final-score').innerText = scoreCounter;
+            
+            let msg = "";
+            let icon = "";
+            if(scoreCounter >= 90) {
+                msg = "Sempurna! Kamu adalah Ahli Fisika Atmosfer & Gas Sejati. Pemahaman materi dan tadabbur ayat Al-Qur'an kamu sangat luar biasa!";
+                icon = '<i class="fas fa-trophy text-amber-400"></i>';
+            } else if (scoreCounter >= 70) {
+                msg = "Hasil yang sangat bagus! Kamu sudah memahami konsep Tekanan Atmosfer, Hukum Boyle, dan Aplikasi Gas dengan baik.";
+                icon = '<i class="fas fa-medal text-sky-400"></i>';
+            } else {
+                msg = "Tetap semangat! Pelajari kembali halaman materi dan cobalah eksperimen di Virtual Lab Gas.";
+                icon = '<i class="fas fa-book-reader text-slate-400"></i>';
+            }
+            
+            document.getElementById('result-message').innerText = msg;
+            document.getElementById('result-icon').innerHTML = icon;
+        }
+
+        function resetQuiz() {
+            startQuiz();
+        }
+
+        window.onload = function() {
+            showMateriPage(1);
+            initCanvas();
+            updateLabBoyle();
+            updateLabAltitude();
+            updateGameBalloon();
+        };
+    </script>
+</body>
+</html>
